@@ -1,0 +1,146 @@
+[
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "abrtd",
+            "fullcommand": "/usr/sbin/abrtd",
+            "pid": "1971"
+        },
+        "tags": {
+            "%cpu": "0.87",
+            "%sys": "0.72",
+            "%usr": "0.15",
+            "iowaittime": "7",
+            "majorfault": "0",
+            "minorfault": "6",
+            "resdata": "592",
+            "resset": "1108",
+            "restext": "20",
+            "shdlib": "680",
+            "size": "110628",
+            "threads": "1"
+        },
+        "date": "2016-10-04T07:48:04.000Z"
+    },
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "flush-253:0",
+            "fullcommand": "[flush-253:0]",
+            "pid": "947"
+        },
+        "tags": {
+            "%cpu": "0.25",
+            "%sys": "0.25",
+            "%usr": "0.00",
+            "iowaittime": "0",
+            "majorfault": "0",
+            "minorfault": "0",
+            "resdata": "0",
+            "resset": "0",
+            "restext": "0",
+            "shdlib": "0",
+            "size": "0",
+            "threads": "1"
+        },
+        "date": "2016-10-04T07:50:04.000Z"
+    },
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "java",
+            "fullcommand": "java -server -Dio.netty.leakDetectionLevel=advanced -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.rmi.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=nurswgvml007 -Dcom.sun.management.jmxremote.access.file=/home/axibase/atsd/conf/jmx.access -Dcom.sun.management.jmxremote.password.file=/home/axibase/atsd/conf/jmx.password -Xmx1024M -Xloggc:/home/axibase/atsd/logs/gc.log -verbose:gc -XX:ErrorFile=/home/axibase/atsd/logs/java_error%p.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+PrintGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/axibase/atsd/logs -classpath /home/axibase/atsd/conf:/home/axibase/atsd/bin/atsd-executable.jar com.axibase.tsd.Server",
+            "pid": "16122"
+        },
+        "tags": {
+            "%cpu": "4.58",
+            "%sys": "0.67",
+            "%usr": "3.92",
+            "iowaittime": "0",
+            "majorfault": "0",
+            "minorfault": "0",
+            "resdata": "1950744",
+            "resset": "684248",
+            "restext": "4",
+            "shdlib": "15656",
+            "size": "2108520",
+            "threads": "165"
+        },
+        "date": "2016-10-04T07:51:04.000Z"
+    },
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "jbd2/dm-0-8",
+            "fullcommand": "[jbd2/dm-0-8]",
+            "pid": "406"
+        },
+        "tags": {
+            "%cpu": "0.12",
+            "%sys": "0.12",
+            "%usr": "0.00",
+            "iowaittime": "0",
+            "majorfault": "0",
+            "minorfault": "0",
+            "resdata": "0",
+            "resset": "0",
+            "restext": "0",
+            "shdlib": "0",
+            "size": "0",
+            "threads": "1"
+        },
+        "date": "2016-10-04T07:48:04.000Z"
+    },
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "kblockd/0",
+            "fullcommand": "[kblockd/0]",
+            "pid": "16"
+        },
+        "tags": {
+            "%cpu": "0.22",
+            "%sys": "0.22",
+            "%usr": "0.00",
+            "iowaittime": "0",
+            "majorfault": "0",
+            "minorfault": "0",
+            "resdata": "0",
+            "resset": "0",
+            "restext": "0",
+            "shdlib": "0",
+            "size": "0",
+            "threads": "1"
+        },
+        "date": "2016-10-04T07:50:04.000Z"
+    },
+    {
+        "type": "process",
+        "entity": "nurswgvml007",
+        "key": {
+            "command": "python2.6",
+            "fullcommand": "/usr/bin/python2.6 /usr/local/tcollector/tcollector.py -c /usr/local/tcollector/collectors -H 10.102.0.6 -p 8081 -t host=NURSWGVML007 -P /var/run/tcollector.pid --logfile /var/log/tcollector.log",
+            "pid": "25068"
+        },
+        "tags": {
+            "%cpu": "0.20",
+            "%sys": "0.05",
+            "%usr": "0.15",
+            "iowaittime": "0",
+            "majorfault": "0",
+            "minorfault": "30",
+            "resdata": "157016",
+            "resset": "5292",
+            "restext": "4",
+            "shdlib": "1468",
+            "size": "338324",
+            "threads": "3"
+        },
+        "date": "2016-10-04T07:51:04.000Z"
+    }
+]
