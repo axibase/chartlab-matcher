@@ -65,11 +65,13 @@ public class Portal {
         if (this.getClass() != other.getClass()) {
             return false;
         }
-        return url.equals(((Portal)other).url);
+        Portal otherPortal = (Portal) other;
+        return configId.equals(otherPortal.configId) && 
+                revString.equals(otherPortal.revString);
     }
 
     @Override
     public int hashCode() {
-        return url.hashCode();
+        return (configId + "/" + revString).hashCode();
     }
 }
