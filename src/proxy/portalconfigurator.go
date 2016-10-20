@@ -102,6 +102,10 @@ func (c *remoteConfigurator) fixEndtimes(conf string, portal *Portal) string {
 	// Reset endtimes for console
 	re = regexp.MustCompile(`\n[\t\f ]*t[^\d\w=]*y[^\d\w=]*p[^\d\w=]*e[\t\f ]*=[\t\f ]*console`)
 	conf = re.ReplaceAllString(conf, "\ntype = console\nendtime = now")
+
+	// Reset update interval
+	re = regexp.MustCompile(`\n[\t\f ]*u[^\d\w=]*p[^\d\w=]*d[^\d\w=]*a[^\d\w=]*t[^\d\w=]*e[^\d\w=]*i[^\d\w=]*n[^\d\w=]*t[^\d\w=]*e[^\d\w=]*r[^\d\w=]*v[^\d\w=]*a[^\d\w=]*l[\t\f ]*=[^\n]*`)
+	conf = re.ReplaceAllString(conf, "")
 	return conf
 }
 

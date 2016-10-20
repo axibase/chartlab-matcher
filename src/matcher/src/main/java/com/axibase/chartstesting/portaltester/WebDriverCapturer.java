@@ -51,7 +51,7 @@ public class WebDriverCapturer implements ScreenCapturer {
 
         try {
             // Wait for animation
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new TimeoutException();
         }
