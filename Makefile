@@ -2,7 +2,7 @@ MATCHER_DIR=src/matcher
 PROXY_RES_DIR=src/proxy
 GOPATH=$(PWD)
 
-all: bin matcher proxy proxy_res
+all: bin matcher proxy
 	
 bin:
 	mkdir -p bin
@@ -13,9 +13,6 @@ matcher: bin
 
 proxy: bin
 	go get -v proxy && go install proxy
-
-proxy_res: proxy
-	cp -r $(PROXY_RES_DIR)/data $(PROXY_RES_DIR)/templates bin/
 
 clean:
 	mvn clean -f $(MATCHER_DIR)/pom.xml

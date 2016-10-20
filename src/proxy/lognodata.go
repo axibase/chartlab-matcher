@@ -26,7 +26,7 @@ func LogNoResponseData(hand http.Handler) http.Handler {
 			w.Header().Set("Content-Encoding", "gzip")
 			reader, err = gzip.NewReader(reader)
 			if err != nil {
-				log.Println("[ERROR] reading GZIP:", err)
+				log.Printf("[ERROR] Reading GZIP for %s/%s WGT#%s: %s\n", id, rev, wgt, err)
 				io.Copy(w, recorder.Body)
 				return
 			}
@@ -36,7 +36,7 @@ func LogNoResponseData(hand http.Handler) http.Handler {
 		var jsonData []map[string]json.RawMessage
 		err = decoder.Decode(&jsonData)
 		if err != nil {
-			log.Println("[ERROR] reading JSON:", err)
+			log.Printf("[ERROR] Reading JSON for %s/%s WGT#%s: %s\n", id, rev, wgt, err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -54,7 +54,7 @@ func LogNoResponseData(hand http.Handler) http.Handler {
 				var dataSlice []interface{}
 				err = json.Unmarshal(data, &dataSlice)
 				if err != nil {
-					log.Println("[ERROR] reading JSON:", err)
+					log.Printf("[ERROR] Reading JSON for %s/%s WGT#%s: %s\n", id, rev, wgt, err)
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}

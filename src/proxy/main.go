@@ -2,54 +2,104 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"proxy/settings"
+	"time"
 )
 
-var outputFile = flag.String("log", "", "output log file")
-var addr = flag.String("addr", ":8080", "address where server running")
+const DefaultAddr = ":8080"
+
+var logFilePtr = flag.String("log", "", "log file path (default stdout)")
+var addr = flag.String("addr", "", "Override configuration addr")
 
 func main() {
-	if AXIBASE_URL == "" {
-		log.Fatalln("AXIBASE_URL is not specified")
-	} else {
-		log.Println(AXIBASE_URL)
-	}
-
 	flag.Parse()
-
-	if len(*outputFile) > 0 {
-		file, err := os.Create(*outputFile)
+	if logFilePtr != nil && len(*logFilePtr) > 0 {
+		logFile, err := os.Create(*logFilePtr)
 		if err != nil {
-			fmt.Println("Unable to to open log file, cause", err)
-			os.Exit(-1)
-			return
+			log.Println("[ERROR] Unable to initialize log:", err)
+			log.Println("[ERROR] Writing log to stdout")
+		} else {
+			defer logFile.Close()
+			log.SetOutput(logFile)
 		}
-		defer file.Close()
-		log.SetOutput(io.MultiWriter(os.Stdout, file))
 	}
 
-	http.Handle("/", &PortalHandler{})
+	filename := "proxy.conf"
+	serverConf, err := settings.GetSettingsFrom(filename)
+	if err != nil {
+		log.Fatalln("[ERROR] Unable to read configuration:", err)
+	}
+	if addr != nil && len(*addr) > 0 {
+		serverConf.Addr = *addr
+	}
 
-	apiURL, _ := url.Parse(AXIBASE_APPS_URL)
-	proxy := httputil.NewSingleHostReverseProxy(apiURL)
-	lndProxy := LogNoResponseData(proxy)
-	http.Handle("/api/", lndProxy)
-	http.Handle("/hbs/", lndProxy)
-	http.Handle("/hbss/", lndProxy)
-	http.Handle("/chartlab/", proxy)
+	http.DefaultClient.Timeout = 2 * time.Minute
 
-	http.Handle(PROPERTY_PROXY_PATH, LogNoResponseData(NewPropertyProxy()))
-	http.Handle(ALERTS_PROXY_PATH, LogNoResponseData(AlertsHandler()))
+	configureProxies(serverConf)
+	configurePortalPage(serverConf)
+	runServer(serverConf)
+}
 
-	log.Println("Starting server on", *addr)
-	err := http.ListenAndServe(*addr, nil)
+func initLog() {
+}
+
+func configureProxies(serverConf *settings.ServerSettings) {
+	for _, proxyConf := range serverConf.Proxies {
+		proxy, err := CreateProxy(proxyConf)
+		if err != nil {
+			log.Fatalln("Unable to create proxy:", err)
+		}
+		http.Handle(proxyConf.Path, proxy)
+	}
+}
+
+func runServer(serverConf *settings.ServerSettings) {
+	if len(serverConf.Addr) == 0 {
+		serverConf.Addr = DefaultAddr
+	}
+	log.Println("Starting server on", serverConf.Addr)
+	err := http.ListenAndServe(serverConf.Addr, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func configurePortalPage(serverConf *settings.ServerSettings) {
+	portalC := NewPortalConfigurator(serverConf.Configurator)
+	portalH := NewPortalHandler(portalC)
+	http.Handle("/", portalH)
+}
+
+func configureMainPageProxy() {
+	handler, ok := RegisteredProxies["/"]
+	if !ok {
+		log.Println("No main page proxy")
+		return
+	}
+
+	proxy, ok := handler.(*httputil.ReverseProxy)
+	if !(ok) {
+		log.Println("Main page handler is not a proxy")
+		return
+	}
+
+	oldDirector := proxy.Director
+	proxy.Director = func(r *http.Request) {
+		if len(r.URL.Path) == 0 || r.URL.Path == "/" {
+			q := url.Values{}
+			q.Set("id", r.FormValue("id"))
+			q.Set("v", r.FormValue("rev"))
+			q.Set("theme", "default")
+			q.Set("dataSource", "default")
+			r.URL.RawQuery = q.Encode()
+		}
+
+		oldDirector(r)
+	}
+	RegisteredProxies["/"] = proxy
 }
