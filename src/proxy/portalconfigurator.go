@@ -90,7 +90,7 @@ func (c *remoteConfigurator) fixEndtimes(conf string, portal *Portal) string {
 	conf = buffer.String()
 
 	// Set global endtime
-	conf = strings.Replace(conf, "[configuration]", "[configuration]\nendtime = "+portal.Endtime, 1)
+	conf = strings.Replace(conf, "[configuration]", "[configuration]\ntimezone = UTC\nendtime = "+portal.Endtime, 1)
 
 	// Replace new Date() with endtime
 	conf = strings.Replace(conf, "new Date()", "new Date("+portal.Endtime+")", -1)

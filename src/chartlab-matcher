@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar /usr/local/chartlab-matcher/matcher.jar $@
+java -Duser.timesone=UTC -jar /usr/local/chartlab-matcher/matcher.jar $@

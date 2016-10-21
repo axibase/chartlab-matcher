@@ -50,8 +50,8 @@ public class WebDriverCapturer implements ScreenCapturer {
                 .until(portalReadyCondition);
 
         try {
-            // Wait for animation
-            Thread.sleep(2000);
+            // Wait for animation and dropdowns
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             throw new TimeoutException();
         }
