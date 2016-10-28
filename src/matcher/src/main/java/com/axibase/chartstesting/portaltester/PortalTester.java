@@ -224,11 +224,19 @@ public class PortalTester implements Callable<Boolean> {
 
     private static List<FutureTask<Boolean>> runTestingTasks() {
         List<FutureTask<Boolean>> tasks = new ArrayList<>(threadCount);
+        int spawnAtMilliseconds = 3000;
+        int spawnDelay = spawnAtMilliseconds / threadCount;
+
         for (int i = 0; i < threadCount; i++) {
             PortalTester tester = new PortalTester();
             FutureTask<Boolean> task = new FutureTask<>(tester);
             new Thread(task).start();
             tasks.add(task);
+            try {
+            	Thread.sleep(spawnDelay);
+    	    } catch (InterruptedException e) {
+    	        e.printStackTrace();
+    	    }
         }
         return tasks;
     }
@@ -258,12 +266,6 @@ public class PortalTester implements Callable<Boolean> {
     }
 
     private static void parseCommandLineArgs(String[] args) {
-        // TODO: Remove stubs
-//        inputFilePath = "links_big.json";
-//        ignoreFilePath = "blacklist.json";
-//        MAX_FALSE_RESULTS = 30;
-//        threadCount = 8;
-//        outputFileName = "output.log";
         Options cliOptions = registerCLIOptions();
         parseCLIOptions(cliOptions, args);
     }
