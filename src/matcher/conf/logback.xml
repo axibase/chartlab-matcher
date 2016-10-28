@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--<appender name="logRoller" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<filter class="com.axibase.tsd.collector.logback.Collector">-->
+            <!--<url>tcp://localhost:8081</url>-->
+        <!--</filter>-->
+
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash; rollover daily &ndash;&gt;-->
+            <!--<fileNamePattern>../logs/atsd-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
+            <!--<timeBasedFileNamingAndTriggeringPolicy-->
+                    <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                <!--&lt;!&ndash; or whenever the file size reaches its size limit &ndash;&gt;-->
+                <!--<maxFileSize>${logger.max.file.size}</maxFileSize>-->
+            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+            <!--<maxHistory>${logger.max.history.days}</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder>-->
+            <!--<pattern>%date{ISO8601};%level;%thread;%logger;%message%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601};%level;%thread;%logger{35};%message%n</pattern>
+        </encoder>
+    </appender>
+
+<!--    <logger name="org.springframework.integration.ip" level="DEBUG" />-->
+    <!--<logger name="com.axibase.tsd.net.PipelineFactory" level="DEBUG" />-->
+    <!--<logger name="org.jboss.netty" level="DEBUG" />-->
+    <!--<logger name="org.jboss.netty" level="DEBUG" />-->
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
