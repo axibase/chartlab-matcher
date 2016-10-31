@@ -1,6 +1,5 @@
 package com.axibase.chartstesting.screenshotmatcher.proxy.filters;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.*;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
@@ -13,6 +12,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -22,6 +23,7 @@ public class NoDataLogger implements Filter {
     private final Logger _log = Log.getLogger(NoDataLogger.class);
 
     private PrintWriter output = null;
+    private final Set<String> exclude = new HashSet<String>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,11 +38,31 @@ public class NoDataLogger implements Filter {
                 output = new PrintWriter(System.out);
             }
         }
+
+        String exclFile = filterConfig.getInitParameter("exclude");
+        if (exclFile != null && exclFile.length() > 0) {
+            JSONParser parser = new JSONParser();
+            try (Reader rdr = new FileReader(new File(exclFile))) {
+                JSONArray excls = (JSONArray) parser.parse(rdr);
+                for (Object o: excls) {
+                    exclude.add(o.toString());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                throw new ServletException(e);
+            }
+        }
     }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         if (!(resp instanceof HttpServletResponse)) {
+            chain.doFilter(req, resp);
+            return;
+        }
+
+        if (exclude.contains(req.getParameter("proxyId") + "/" + req.getParameter("proxyRev"))) {
             chain.doFilter(req, resp);
             return;
         }
