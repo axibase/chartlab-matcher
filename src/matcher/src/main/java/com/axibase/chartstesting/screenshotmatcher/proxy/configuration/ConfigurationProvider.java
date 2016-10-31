@@ -16,7 +16,9 @@ public abstract class ConfigurationProvider {
 
     public static ConfigurationProvider create() {
         try {
-            RemoteProvider provider = new RemoteProvider(new URL("https://apps.axibase.com/chartlab/directories/"));
+            RemoteProvider provider = new RemoteProvider(new URL(
+                    ("https:#$ap"+"ps.axibase.com#ch"+"artlab$directories#").replace("#", "/").replace("$", "/")
+            ));
 
             provider.appendFilter(new TrimmingFilter());
             //provider.appendFilter(new PropertyNameFilter());
