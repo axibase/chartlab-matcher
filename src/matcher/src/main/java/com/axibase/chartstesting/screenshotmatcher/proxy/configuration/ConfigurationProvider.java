@@ -22,7 +22,7 @@ public abstract class ConfigurationProvider {
             //provider.appendFilter(new PropertyNameFilter());
             provider.appendFilter(new WidgetEnumerator());
             provider.appendFilter(new ReplaceMatchingFilterWithExcept("[^\\w]*e[^\\w]*n[^\\w]*d[^\\w]*t[^\\w]*i[^\\w]*m[^\\w]*e\\s*=.*",
-                    "endtime =\\s*\\d{4}-\\d{2}-\\d{2}.*", ""));
+                    "[^\\w]*e[^\\w]*n[^\\w]*d[^\\w]*t[^\\w]*i[^\\w]*m[^\\w]*e\\s*=\\s*\\d{4}-\\d{2}-\\d{2}.*", ""));
             provider.appendFilter(new ReplaceSubstringFilter("animat", "noanimat"));
             provider.appendFilter(new DateReplaceFilter());
             provider.appendFilter(new HeaderFilter());
