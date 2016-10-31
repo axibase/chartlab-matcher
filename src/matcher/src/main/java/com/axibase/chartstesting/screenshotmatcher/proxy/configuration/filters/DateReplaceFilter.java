@@ -7,6 +7,6 @@ import com.axibase.chartstesting.screenshotmatcher.core.Portal;
  */
 public class DateReplaceFilter implements LineFilter {
     public String filter(String line, Portal portal) {
-        return new ReplaceSubstringFilter("Date ()", "Date("+portal.getEndtime()+")").filter(line, portal);
+        return new ReplaceSubstringFilter("Date()", "Date("+portal.getEndtime()+")").filter(line, portal);
     }
 }
