@@ -79,6 +79,12 @@ public class NoDataLogger implements Filter {
                 req.getParameter("proxyWgt");
         try {
             JSONArray arr = (JSONArray) parser.parse(new InputStreamReader(in));
+            if (arr.isEmpty()) {
+                output.println(warn);
+                output.flush();
+                return;
+            }
+
             for (Object obj: arr) {
                 JSONObject jsonObj = (JSONObject) obj;
                 if (jsonObj.containsKey("data")) {
