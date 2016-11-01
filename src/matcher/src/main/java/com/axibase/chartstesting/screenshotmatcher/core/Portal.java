@@ -11,10 +11,23 @@ public class Portal {
     private final String revString;
     private String endtime = "none";
 
-    public Portal(String url) throws MalformedURLException {
-        this(new URL(url));
+    public Portal(String path) throws IllegalArgumentException {
+        String[] parts = path.split("/");
+        switch (parts.length) {
+        case 1:
+            configId = parts[0];
+            revString = "1";
+            break;
+        case 2:
+            configId = parts[0];
+            revString = parts[1];
+            break;
+        default:
+            throw new IllegalArgumentException("unable to parse path " + path);
+        }
     }
 
+    @Deprecated
     public Portal(URL url) {
         String[] pathParts = url.getPath().split("/");
         if (pathParts.length < 3) {
@@ -47,6 +60,10 @@ public class Portal {
 
     public void setEndtime(String endtime) {
         this.endtime = endtime == null ? "none": endtime;
+    }
+
+    public boolean hasEndtime() {
+        return !(endtime.equals("none") || endtime.equals(""));
     }
 
     @Override

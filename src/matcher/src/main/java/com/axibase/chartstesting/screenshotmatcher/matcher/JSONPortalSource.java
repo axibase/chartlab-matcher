@@ -38,7 +38,7 @@ public class JSONPortalSource implements PortalSource {
             JSONArray jsonArr = (JSONArray) parser.parse(input);
             for (Object obj : jsonArr) {
                 JSONObject json = (JSONObject) obj;
-                Portal page = new Portal(json.get("url").toString());
+                Portal page = new Portal(json.get("path").toString());
 
                 Object endtime = json.get("endtime");
                 String et = null;
