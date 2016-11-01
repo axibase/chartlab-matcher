@@ -45,7 +45,11 @@ public class NoDataLogger implements Filter {
             try (Reader rdr = new FileReader(new File(exclFile))) {
                 JSONArray excls = (JSONArray) parser.parse(rdr);
                 for (Object o: excls) {
-                    exclude.add(o.toString());
+                    JSONObject jsObj = (JSONObject) o;
+                    Object path = jsObj.get("path");
+                    if (path != null) {
+                        exclude.add(path.toString());
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,7 +88,6 @@ public class NoDataLogger implements Filter {
                 output.flush();
                 return;
             }
-
             for (Object obj: arr) {
                 JSONObject jsonObj = (JSONObject) obj;
                 if (jsonObj.containsKey("data")) {
