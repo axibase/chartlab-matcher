@@ -1,4 +1,16 @@
 [
+  { "path": "aecf6da9/1", "note": "Waiting for fix"},
+  { "path": "e6822a69/5", "note": "Graph widget, it's ok"},
+  { "path": "01c588eb/1", "note": "No forecast, cause of old date"},
   { "path": "106bddba/1", "note": "Use of Freemarker"},
+  { "path": "36ae5c9e/2", "note": "Considered OK till data fixes"},
+  { "path": "36ae5c9e/3", "note": "Considered OK till data fixes"},
+  { "path": "43f054ee/1", "note": "Considered OK till data fixes"},
+  { "path": "b69e4fcd/3", "note": "Considered OK till data fixes"},
+  { "path": "c09dc1cd/1", "note": "Considered OK till data fixes"},
+  { "path": "cdb8bc6c/1", "note": "Considered OK till data fixes"},
+  { "path": "db099fa9/2", "note": "Considered OK till data fixes"},
+  { "path": "f6c20264/2", "note": "Considered OK till data fixes"},
+  { "path": "f9d176ac/2", "note": "Considered OK till data fixes"},
   { "path": "dada4561/2", "note": "Example of no data" }
 ]
