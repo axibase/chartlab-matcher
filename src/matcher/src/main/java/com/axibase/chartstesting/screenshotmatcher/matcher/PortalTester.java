@@ -44,6 +44,8 @@ public class PortalTester implements Callable<Boolean> {
     private static String outputDir = "output";
     private static String outputFileName = null;
 
+    private static int retry = 0;
+
     private WebDriver driver;
     private ScreenCapturer capturer;
     private ScreenshotStorage backupStorage;
@@ -104,78 +106,83 @@ public class PortalTester implements Callable<Boolean> {
                     _log.warn("Portal testing interrupted");
                     break;
                 }
-
-                boolean isBackupMode = !backupStorage.contains(portal);
-
-                File screenshot = null;
-                try {
-                    screenshot = capturer.capture(portal);
-                } catch (TimeoutException e) {
-                    if (!isBackupMode) {
-                        output.println("[TIMEOUT] " + portal.toString());
-                    }
-                    _log.warn("Timeout on " + portal.toString());
+                boolean subresult = false;
+                for (int tries = retry + 1; tries > 0; tries--) {
+                    subresult |= checkScreenshot(portal);
+                    if (subresult) break;
+                    if (tries > 1) output.println("[RETRY]\t" + portal);
+                }
+                output.println((subresult ? "[PASS]\t" : "[FAIL]\t") + portal);
+                if (!subresult) {
                     synchronized (falseResultLocker) {
                         falseResultCounter++;
                     }
-                    result = false;
-                    continue;
-                } catch (UnreachableBrowserException e) {
-                    if (!isBackupMode) {
-                        output.println("[WARNING] WebDriver died during processing " + portal.toString());
-                    }
-
-                    _log.warn("WebDriver died during processing " + portal.toString());
-                    return result;
                 }
-
-                if (isBackupMode) {
-                    try {
-                        backupStorage.save(portal, screenshot);
-                        hashStorage.save(portal, screenshot);
-                        _log.info("Saved screenshot for " + portal.toString());
-                        output.println("[ADDED] " + portal);
-                    } catch (IOException e) {
-                        _log.warn("backup screenshot save failed, cause " + e.getMessage());
-                    }
-                    continue;
-                }
-
-                try {
-                    currentStorage.save(portal, screenshot);
-                } catch (IOException e) {
-                    _log.warn("current screenshot save failed, cause " + e.getMessage());
-                }
-
-                try {
-                    String srcHash = hashStorage.getChecksum(portal);
-                    String dstHash = hasher.getHashsum(screenshot);
-
-                    boolean match = srcHash.equals(dstHash);
-                    if (!match) {
-                        output.println("[FAIL]\t" + portal.toString());
-                        try {
-                            outputStorage.save(portal, backupStorage.getScreenshot(portal), screenshot);
-                        } catch (IOException e) {
-                            _log.warn("output screenshots save failed, cause " + e.getMessage());
-                        }
-
-                        synchronized (falseResultLocker) {
-                            falseResultCounter++;
-                        }
-                        result = false;
-                    } else {
-                        output.println("[PASS]\t" + portal.toString());
-                    }
-                } catch (IOException e) {
-                    _log.warn("unable to compare hashsums, cause " + e.toString());
-                }
-
+                result &= subresult;
             }
         } finally {
             close();
         }
         return result;
+    }
+
+    private boolean checkScreenshot(Portal portal) {
+        File screenshot = null;
+        try {
+            screenshot = capturer.capture(portal);
+        } catch (TimeoutException e) {
+            output.println("[TIMEOUT] " + portal.toString());
+            _log.warn("Timeout on " + portal.toString());
+            return false;
+        } catch (UnreachableBrowserException e) {
+            output.println("[WARN] WebDriver died during processing " + portal.toString());
+            _log.warn("WebDriver died during processing " + portal.toString());
+            return false;
+        }
+
+        boolean isBackupMode = !backupStorage.contains(portal);
+        if (isBackupMode) {
+            saveBackupScreenshot(portal, screenshot);
+            return true;
+        }
+
+        try {
+            currentStorage.save(portal, screenshot);
+        } catch (IOException e) {
+            _log.warn("current screenshot save failed, cause " + e.getMessage());
+        }
+        return isCorrect(portal, screenshot);
+    }
+
+    private boolean isCorrect(Portal portal, File screenshot) {
+        try {
+            String srcHash = hashStorage.getChecksum(portal);
+            String dstHash = hasher.getHashsum(screenshot);
+
+            boolean match = srcHash.equals(dstHash);
+            if (!match) {
+                try {
+                    outputStorage.save(portal, backupStorage.getScreenshot(portal), screenshot);
+                } catch (IOException e) {
+                    _log.warn("output screenshots save failed, cause " + e.getMessage());
+                }
+            }
+            return match;
+        } catch (IOException e) {
+            _log.warn("unable to compare hashsums, cause " + e.toString());
+        }
+        return false;
+    }
+
+    private void saveBackupScreenshot(Portal portal, File screenshot) {
+        try {
+            backupStorage.save(portal, screenshot);
+            hashStorage.save(portal, screenshot);
+            _log.info("Saved screenshot for " + portal.toString());
+            output.println("[ADDED] " + portal);
+        } catch (IOException e) {
+            _log.warn("backup screenshot save failed, cause " + e.getMessage());
+        }
     }
 
     public void close() {
@@ -224,7 +231,6 @@ public class PortalTester implements Callable<Boolean> {
 
     private static void startServer() throws IOException {
         server = new ChartlabTestingServer();
-        server.writeOutputTo("server._log");
         server.start();
     }
 
@@ -321,12 +327,20 @@ public class PortalTester implements Callable<Boolean> {
                 .argName("file")
                 .build();
 
+        Option retry = Option.builder("r")
+                .longOpt("retry")
+                .desc("Numbers of retry")
+                .numberOfArgs(1)
+                .argName("num")
+                .build();
+
         opts.addOption(ignoreFile);
         opts.addOption(viewportDimensions);
         opts.addOption(threads);
         opts.addOption(bads);
         opts.addOption(outputDir);
         opts.addOption(output);
+        opts.addOption(retry);
         return opts;
     }
 
@@ -366,6 +380,9 @@ public class PortalTester implements Callable<Boolean> {
 
             // Set input file
             inputFilePath = cli.getArgs()[0];
+
+            // Set number of retries
+            retry = Math.max(0, new Integer(cli.getOptionValue('r', "0")));
         } catch (Exception ex) {
             showUsage(opts);
             System.exit(-1);
