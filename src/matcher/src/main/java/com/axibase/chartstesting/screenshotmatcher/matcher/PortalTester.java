@@ -134,6 +134,7 @@ public class PortalTester implements Callable<Boolean> {
                         backupStorage.save(portal, screenshot);
                         hashStorage.save(portal, screenshot);
                         _log.info("Saved screenshot for " + portal.toString());
+                        output.println("[ADDED] " + portal);
                     } catch (IOException e) {
                         _log.warn("backup screenshot save failed, cause " + e.getMessage());
                     }
