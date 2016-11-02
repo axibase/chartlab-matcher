@@ -1,9 +1,11 @@
 package com.axibase.chartstesting.screenshotmatcher.proxy;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.log.StdErrLog;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -20,7 +22,14 @@ public class ProxyServer {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(port);
+        QueuedThreadPool pool = new QueuedThreadPool(100, 10);
+        Server server = new Server(pool);
+
+        ServerConnector http = new ServerConnector(server);
+        http.setHost("localhost");
+        http.setPort(port);
+        http.setIdleTimeout(120000);
+        server.addConnector(http);
 
         WebAppContext context = new WebAppContext();
 
