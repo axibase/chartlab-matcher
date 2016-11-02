@@ -54,6 +54,8 @@ public class PortalTester implements Callable<Boolean> {
     private Hasher hasher;
     private OutputStorage outputStorage;
 
+    private boolean isBackupMode = false;
+
     public PortalTester() {
         initWebDriver();
         initScreenCapturer();
@@ -107,12 +109,18 @@ public class PortalTester implements Callable<Boolean> {
                     break;
                 }
                 boolean subresult = false;
-                for (int tries = retry + 1; tries > 0; tries--) {
-                    subresult |= checkScreenshot(portal);
-                    if (subresult) break;
-                    if (tries > 1) output.println("[RETRY]\t" + portal);
+                try {
+                    for (int tries = retry + 1; tries > 0; tries--) {
+                        subresult |= checkScreenshot(portal);
+                        if (subresult) break;
+                        if (tries > 1) output.println("[RETRY]\t" + portal);
+                    }
+                } catch (WebDriverStopException e) {
+                    return false;
                 }
-                output.println((subresult ? "[PASS]\t" : "[FAIL]\t") + portal);
+                if (!isBackupMode) {
+                    output.println((subresult ? "[PASS]\t" : "[FAIL]\t") + portal);
+                }
                 if (!subresult) {
                     synchronized (falseResultLocker) {
                         falseResultCounter++;
@@ -126,7 +134,7 @@ public class PortalTester implements Callable<Boolean> {
         return result;
     }
 
-    private boolean checkScreenshot(Portal portal) {
+    private boolean checkScreenshot(Portal portal) throws  WebDriverStopException {
         File screenshot = null;
         try {
             screenshot = capturer.capture(portal);
@@ -137,10 +145,10 @@ public class PortalTester implements Callable<Boolean> {
         } catch (UnreachableBrowserException e) {
             output.println("[WARN] WebDriver died during processing " + portal.toString());
             _log.warn("WebDriver died during processing " + portal.toString());
-            return false;
+            throw new WebDriverStopException(e);
         }
 
-        boolean isBackupMode = !backupStorage.contains(portal);
+        isBackupMode = !backupStorage.contains(portal);
         if (isBackupMode) {
             saveBackupScreenshot(portal, screenshot);
             return true;
