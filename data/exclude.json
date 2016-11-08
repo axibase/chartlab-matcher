@@ -3,6 +3,7 @@
   { "path": "e6822a69/5", "note": "Graph widget, it's ok"},
   { "path": "01c588eb/1", "note": "No forecast, cause of old date"},
   { "path": "106bddba/1", "note": "Use of Freemarker"},
+  { "path": "3c891764/5", "note": "no data, waiting for fix" },
   { "path": "36ae5c9e/2", "note": "Considered OK till data fixes"},
   { "path": "36ae5c9e/3", "note": "Considered OK till data fixes"},
   { "path": "43f054ee/1", "note": "Considered OK till data fixes"},
