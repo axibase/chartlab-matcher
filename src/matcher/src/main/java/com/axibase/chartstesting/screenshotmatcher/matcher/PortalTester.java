@@ -125,6 +125,13 @@ public class PortalTester implements Callable<Boolean> {
                     synchronized (falseResultLocker) {
                         falseResultCounter++;
                     }
+                    try {
+                        outputStorage.save(portal,
+                            backupStorage.getScreenshot(portal),
+                            currentStorage.getScreenshot(portal));
+                    } catch (IOException e) {
+                        _log.warn("output screenshots save failed, cause " + e.getMessage());
+                    }
                 }
                 result &= subresult;
             }
@@ -168,13 +175,6 @@ public class PortalTester implements Callable<Boolean> {
             String dstHash = hasher.getHashsum(screenshot);
 
             boolean match = srcHash.equals(dstHash);
-            if (!match) {
-                try {
-                    outputStorage.save(portal, backupStorage.getScreenshot(portal), screenshot);
-                } catch (IOException e) {
-                    _log.warn("output screenshots save failed, cause " + e.getMessage());
-                }
-            }
             return match;
         } catch (IOException e) {
             _log.warn("unable to compare hashsums, cause " + e.toString());
