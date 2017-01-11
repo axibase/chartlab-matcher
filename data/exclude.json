@@ -12,8 +12,8 @@
   { "path": "c09dc1cd/1", "note": "Considered OK till data fixes"},
   { "path": "cdb8bc6c/1", "note": "Considered OK till data fixes"},
   { "path": "db099fa9/2", "note": "Considered OK till data fixes"},
-  { "path": "e926d483", "note": "Considered OK"},
-  { "path": "5525c0dc", "note": "Considered OK"},
+  { "path": "e926d483/1", "note": "Considered OK"},
+  { "path": "5525c0dc/1", "note": "Considered OK"},
   { "path": "f6c20264/2", "note": "Considered OK till data fixes"},
   { "path": "f9d176ac/2", "note": "Considered OK till data fixes"},
   { "path": "dada4561/2", "note": "Example of no data" }
