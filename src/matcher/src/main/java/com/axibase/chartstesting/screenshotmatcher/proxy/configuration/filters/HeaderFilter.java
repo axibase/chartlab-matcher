@@ -9,33 +9,36 @@ public class HeaderFilter implements LineFilter {
     @Override
     public String filter(String line, Portal portal) {
         String header = "timezone = UTC\n" +
-            "colors = palegoldenrod, darkblue, lightblue, pink, paleturquoise" +
+            "colors = blueviolet, aquamarine, burlywood, chartreuse, crimson, " + 
+            "darkblue, darkgoldenrod, darkorange, darkslateblue, darkcyan, " + 
+            "deeppink, dodgerblue, greenyellow, green, lightgreen, lightsalmon, " + 
+            "mediumaquamarine, midnightblue, olivedrab, red, saddlebrown, " +
+            "skyblue, slategrey, tomato, yellow, yellowgreen, steelblue, khaki, " + 
+            "coral, brown, palegoldenrod, lightblue, pink, paleturquoise" +
             "darkseagreen, powderblue, deepskyblue, azure, lightslategray" +
             "lightgray, royalblue, mediumvioletred, darkmagenta, maroon" +
-            "goldenrod, mediumturquoise, lightyellow, yellow, lemonchiffon" +
-            "blueviolet, deeppink, lavenderblush, red, tan, purple, darkkhaki" +
-            "springgreen, moccasin, dodgerblue, mintcream, aquamarine, salmon" +
-            "beige, papayawhip, grey, lightsalmon, saddlebrown, lightsteelblue" +
+            "goldenrod, mediumturquoise, lightyellow, lemonchiffon" +
+            "lavenderblush, tan, purple, darkkhaki, springgreen, moccasin, " + 
+            "mintcream, salmon, beige, papayawhip, grey, lightsteelblue" +
             "silver, chocolate, firebrick, indigo, indianred, darkolivegreen" +
-            "darkorange, lightgreen, slateblue, darkgreen, olivedrab, slategrey" +
-            "navajowhite, brown, dimgray, violet, skyblue, cadetblue, oldlace" +
+            "slateblue, darkgreen, navajowhite, dimgray, violet, cadetblue, oldlace" +
             "orchid, lightgoldenrodyellow, snow, floralwhite, wheat, sandybrown" +
             "teal, thistle, blanchedalmond, ghostwhite, hotpink, cornsilk" +
-            "yellowgreen, cornflowerblue, mistyrose, gold, olive, forestgreen" +
-            "orangered, slategray, tomato, mediumaquamarine, lightslategrey" +
+            "cornflowerblue, mistyrose, gold, olive, forestgreen" +
+            "orangered, slategray, lightslategrey" +
             "cyan, mediumspringgreen, darkgrey, darkorchid, linen, turquoise" +
-            "seashell, rosybrown, peachpuff, burlywood, mediumslateblue" +
-            "crimson, midnightblue, honeydew, darkslateblue, darkturquoise" +
+            "seashell, rosybrown, peachpuff, mediumslateblue" +
+            "honeydew, darkturquoise" +
             "whitesmoke, lavender, lightgrey, magenta, bisque, lime" +
-            "greenyellow, mediumblue, lightcoral, coral, mediumpurple" +
-            "rebeccapurple, limegreen, green, sienna, lawngreen" +
-            "chartreuse, darkviolet, navy, darkslategrey, aqua" +
+            "mediumblue, lightcoral, mediumpurple" +
+            "rebeccapurple, limegreen, sienna, lawngreen" +
+            "darkviolet, navy, darkslategrey, aqua" +
             "mediumseagreen, darkgray, plum, black, seagreen" +
             "lightseagreen, antiquewhite, orange, lightskyblue" +
-            "peru, dimgrey, lightcyan, darkslategray, steelblue" +
-            "palegreen, darkcyan, lightpink, ivory, darkgoldenrod" +
+            "peru, dimgrey, lightcyan, darkslategray" +
+            "palegreen, lightpink, ivory" +
             "fuchsia, mediumorchid, gray, palevioletred, darkred" +
-            "white, blue, aliceblue, darksalmon, khaki, gainsboro";
+            "white, blue, aliceblue, darksalmon, gainsboro";
 
         if (portal.hasEndtime()) {
             header = "endtime = "+portal.getEndtime()+"\n" + header;
