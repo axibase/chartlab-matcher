@@ -18,5 +18,6 @@
   { "path": "5525c0dc/1", "note": "Considered OK"},
   { "path": "f6c20264/2", "note": "Considered OK till data fixes"},
   { "path": "f9d176ac/2", "note": "Considered OK till data fixes"},
+  { "path": "d5c04002/7", "note": "OK" },
   { "path": "dada4561/2", "note": "Example of no data" }
 ]
