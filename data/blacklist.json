@@ -7,6 +7,8 @@
   { "path": "01288425/80", "note": "notadoc" },
   { "path": "2f607d1b/7/", "note": "internal" },
   { "path": "572dc71f/9/", "note": "no tooltip" },
+  { "path": "14cf1974/1", "note": "WebDriver fail" },
+  { "path": "14cf1974/2", "note": "WebDriver fail" },
   { "path": "b3892525", "note": "PhantomJS fails" },
   { "path": "d80980a8/2/", "note": "PhantomJS fails" },
   { "path": "05400e65/5", "note": "Random data source" },
