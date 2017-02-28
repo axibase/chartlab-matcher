@@ -20,5 +20,9 @@
   { "path": "f6c20264/2", "note": "Considered OK till data fixes"},
   { "path": "f9d176ac/2", "note": "Considered OK till data fixes"},
   { "path": "d5c04002/7", "note": "OK" },
-  { "path": "dada4561/2", "note": "Example of no data" }
+  { "path": "dada4561/2", "note": "Example of no data" },
+  { "path": "bbc5e671/3", "note": "Not all series have data"},
+  { "path": "fe01eb35/1", "note": "Not all series have data"},
+  { "path": "fe01eb35/2", "note": "Not all series have data"},
+  { "path": "fe01eb35/3", "note": "Not all series have data"},
 ]
