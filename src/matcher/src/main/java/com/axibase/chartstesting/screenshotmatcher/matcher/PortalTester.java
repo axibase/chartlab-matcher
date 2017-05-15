@@ -143,19 +143,19 @@ public class PortalTester implements Callable<Boolean> {
 
     private boolean checkScreenshot(Portal portal) throws  WebDriverStopException {
         File screenshot = null;
+        isBackupMode = !backupStorage.contains(portal);
         try {
             screenshot = capturer.capture(portal);
         } catch (TimeoutException e) {
             output.println("[TIMEOUT] " + portal.toString());
             _log.warn("Timeout on " + portal.toString());
-            return false;
+            return isBackupMode;
         } catch (UnreachableBrowserException e) {
             output.println("[WARN] WebDriver died during processing " + portal.toString());
             _log.warn("WebDriver died during processing " + portal.toString());
             throw new WebDriverStopException(e);
         }
 
-        isBackupMode = !backupStorage.contains(portal);
         if (isBackupMode) {
             saveBackupScreenshot(portal, screenshot);
             return true;
