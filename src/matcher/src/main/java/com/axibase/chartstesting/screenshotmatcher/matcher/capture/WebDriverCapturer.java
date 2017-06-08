@@ -9,9 +9,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by aleksandr on 05.10.16.
- */
 public class WebDriverCapturer implements ScreenCapturer {
     private static final int DEFAULT_VIEWPORT_WIDTH = 1920;
     private static final int DEFAULT_VIEWPORT_HEIGHT = 1080;
@@ -37,6 +34,14 @@ public class WebDriverCapturer implements ScreenCapturer {
         String portalURL = String.format("%s/%s/%s?endtime=%s", chartlabURL,
                 portal.getConfigId(), portal.getRevisionString(), portal.getEndtime());
         driver.get(portalURL);
+        
+        try {
+            // Wait for dropdowns
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new TimeoutException();
+        }
+        
         ExpectedCondition<Boolean> portalReadyCondition = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver input) {
                 JavascriptExecutor exec = (JavascriptExecutor) input;
