@@ -9,24 +9,26 @@ import com.axibase.chartstesting.screenshotmatcher.matcher.storages.hash.Hasher;
 import org.apache.commons.cli.*;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-import org.openqa.selenium.*;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-/**
- * Created by aleksandr on 26.09.16.
- */
 public class PortalTester implements Callable<Boolean> {
-    private static volatile Object falseResultLocker = new Object();
+    private static final Object falseResultLocker = new Object();
     private static volatile int falseResultCounter = 0;
     private static volatile int MAX_FALSE_RESULTS = Integer.MAX_VALUE;
 
@@ -63,13 +65,10 @@ public class PortalTester implements Callable<Boolean> {
     }
 
     private void initWebDriver() {
-        DesiredCapabilities caps = DesiredCapabilities.phantomjs();
-        String[] cliArgs = new String[]{
-                "--web-security=false", // Disable cross-domain request protection
-                "--webdriver-loglevel=NONE", // Disable logging
-        };
-        caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgs);
-        driver = new PhantomJSDriver(caps);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
     }
 
@@ -100,7 +99,7 @@ public class PortalTester implements Callable<Boolean> {
         boolean result = true;
         try {
             for (Portal portal = portalSrc.get(); portal != null; portal = portalSrc.get()) {
-                boolean shouldContinue = true;
+                boolean shouldContinue;
                 synchronized (falseResultLocker) {
                     shouldContinue = falseResultCounter <= MAX_FALSE_RESULTS;
                 }
@@ -111,7 +110,7 @@ public class PortalTester implements Callable<Boolean> {
                 boolean subresult = false;
                 try {
                     for (int tries = retry + 1; tries > 0; tries--) {
-                        subresult |= checkScreenshot(portal);
+                        subresult = subresult || checkScreenshot(portal);
                         if (subresult) break;
                         if (tries > 1) output.println("[RETRY]\t" + portal);
                     }
@@ -142,7 +141,7 @@ public class PortalTester implements Callable<Boolean> {
     }
 
     private boolean checkScreenshot(Portal portal) throws  WebDriverStopException {
-        File screenshot = null;
+        File screenshot;
         isBackupMode = !backupStorage.contains(portal);
         try {
             screenshot = capturer.capture(portal);
@@ -174,8 +173,7 @@ public class PortalTester implements Callable<Boolean> {
             String srcHash = hashStorage.getChecksum(portal);
             String dstHash = hasher.getHashsum(screenshot);
 
-            boolean match = srcHash.equals(dstHash);
-            return match;
+            return srcHash.equals(dstHash);
         } catch (IOException e) {
             _log.warn("unable to compare hashsums, cause " + e.toString());
         }

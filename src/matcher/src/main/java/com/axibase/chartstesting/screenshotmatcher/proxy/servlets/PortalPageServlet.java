@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by aleksandr on 25.10.16.
- */
 public class PortalPageServlet extends HttpServlet {
     private ConfigurationProvider confProvider = ConfigurationProvider.create();
 
@@ -64,13 +61,6 @@ public class PortalPageServlet extends HttpServlet {
             "<script src=\"/assets/JavaScript/d3.min.js\"></script>\n" +
             "<script src=\"/assets/JavaScript/highlight.pack.js\"></script>\n" +
             "<script src=\"/assets/JavaScript/charts.min.js\"></script>\n" +
-            "<style>\n" +
-            "  * {\n" +
-            "    font-family: monospace !important;\n" +
-            "    font-smooth: never !important;\n" +
-            "    -webkit-font-smoothing: none !important;\n" +
-            "  }\n" +
-            "</style>\n" +
             "<body onload=\"onBodyLoad()\">\n" +
             "  <script>\n" +
             "    document.isPortalReady = function() {\n" +
