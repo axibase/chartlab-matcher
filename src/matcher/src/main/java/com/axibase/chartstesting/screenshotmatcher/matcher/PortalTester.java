@@ -67,6 +67,7 @@ public class PortalTester implements Callable<Boolean> {
     private void initWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
         options.addArguments("--disable-gpu");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
