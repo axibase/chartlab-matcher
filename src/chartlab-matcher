@@ -2,4 +2,4 @@
 curl https://raw.githubusercontent.com/axibase/chartlab-matcher/master/data/links.json > links.json
 curl https://raw.githubusercontent.com/axibase/chartlab-matcher/master/data/blacklist.json > blacklist.json
 curl https://raw.githubusercontent.com/axibase/chartlab-matcher/master/data/exclude.json > exclude.json
-java -Duser.timesone=UTC -Dwebdriver.chrome.driver=/usr/bin/google-chrome-stable -jar /usr/local/chartlab-matcher/matcher.jar -i blacklist.json $@ links.json
+java -Duser.timesone=UTC -jar /usr/local/chartlab-matcher/matcher.jar -i blacklist.json $@ links.json
