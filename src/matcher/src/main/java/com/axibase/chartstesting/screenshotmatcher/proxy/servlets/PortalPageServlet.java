@@ -67,6 +67,16 @@ public class PortalPageServlet extends HttpServlet {
             "    font-smooth: never !important;\n" +
             "    -webkit-font-smoothing: none !important;\n" +
             "  }\n" +
+            "  svg {\n" +
+            "    font-family: monospace !important;\n" +
+            "    shape-rendering: optimizeSpeed;\n" +
+            "  }\n" +
+            "  .widget {\n" +
+            "    border-radius: 0;\n" +
+            "  }\n" +
+            "  body {\n" +
+            "    background: none;\n" +
+            "  }\n" +
             "</style>\n" +
             "<body onload=\"onBodyLoad()\">\n" +
             "  <script>\n" +
