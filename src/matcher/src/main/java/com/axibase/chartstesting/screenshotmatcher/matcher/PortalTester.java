@@ -13,7 +13,6 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import java.io.File;
@@ -108,6 +107,9 @@ public class PortalTester implements Callable<Boolean> {
                     _log.warn("Portal testing interrupted");
                     break;
                 }
+
+                _log.info("start processing portal " + portal.getConfigId() + "/" + portal.getRevisionString() );
+
                 boolean subresult = false;
                 try {
                     for (int tries = retry + 1; tries > 0; tries--) {
@@ -129,6 +131,7 @@ public class PortalTester implements Callable<Boolean> {
                         outputStorage.save(portal,
                             backupStorage.getScreenshot(portal),
                             currentStorage.getScreenshot(portal));
+                        _log.info("output screenshots saved");
                     } catch (IOException e) {
                         _log.warn("output screenshots save failed, cause " + e.getMessage());
                     }
@@ -204,7 +207,6 @@ public class PortalTester implements Callable<Boolean> {
     // Application running
 
     public static void main(String[] args) {
-        java.util.logging.Logger.getLogger(PhantomJSDriverService.class.getName()).setLevel(Level.WARNING);
         _log.setDebugEnabled(false);
         parseCommandLineArgs(args);
 
