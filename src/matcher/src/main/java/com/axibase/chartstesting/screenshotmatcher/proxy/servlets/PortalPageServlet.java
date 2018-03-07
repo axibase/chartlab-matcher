@@ -74,8 +74,14 @@ public class PortalPageServlet extends HttpServlet {
             "  .widget {\n" +
             "    border-radius: 0;\n" +
             "  }\n" +
+            "  .widgetHeader {\n" +
+            "    background: #e9e9e9;\n" +
+            "  }\n" +
             "  body {\n" +
             "    background: none;\n" +
+            "  }\n" +
+            "  .portalPage body {\n" +
+            "    background: #f1f1f1;\n" +
             "  }\n" +
             "</style>\n" +
             "<body onload=\"onBodyLoad()\">\n" +
