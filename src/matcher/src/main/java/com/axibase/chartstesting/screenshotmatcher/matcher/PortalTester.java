@@ -68,6 +68,9 @@ public class PortalTester implements Callable<Boolean> {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-gpu");
+        options.addArguments("--disable-composited-antialiasing");
+        options.addArguments("--disable-canvas-aa");
+        options.addArguments("--disable-2d-canvas-clip-aa");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
     }
