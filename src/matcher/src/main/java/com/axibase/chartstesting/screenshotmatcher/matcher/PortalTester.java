@@ -179,8 +179,12 @@ public class PortalTester implements Callable<Boolean> {
         try {
             String srcHash = hashStorage.getChecksum(portal);
             String dstHash = hasher.getHashsum(screenshot);
+            boolean hashsumMatches = srcHash.equals(dstHash);
+            if (!hashsumMatches) {
+                _log.warn("Hashsum mismatch (expected %s, got %s) ", srcHash, dstHash);
+            }
 
-            return srcHash.equals(dstHash);
+            return hashsumMatches;
         } catch (IOException e) {
             _log.warn("unable to compare hashsums, cause " + e.toString());
         }
@@ -275,7 +279,7 @@ public class PortalTester implements Callable<Boolean> {
     }
 
     private static void initPortalSource() {
-        JSONPortalSource jps= new JSONPortalSource();
+        JSONPortalSource jps = new JSONPortalSource();
         try {
             jps.includeFile(inputFilePath);
             jps.ignoreFile(ignoreFilePath);
