@@ -181,7 +181,7 @@ public class PortalTester implements Callable<Boolean> {
             String dstHash = hasher.getHashsum(screenshot);
             boolean hashsumMatches = srcHash.equals(dstHash);
             if (!hashsumMatches) {
-                _log.warn("Hashsum mismatch (expected %s, got %s) ", srcHash, dstHash);
+                _log.warn(String.format("Hashsum mismatch (expected %s, got %s) ", srcHash, dstHash));
             }
 
             return hashsumMatches;
