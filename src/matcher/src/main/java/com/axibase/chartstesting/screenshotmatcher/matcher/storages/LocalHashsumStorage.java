@@ -7,6 +7,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aleksandr on 05.10.16.
@@ -31,12 +33,30 @@ public abstract class LocalHashsumStorage implements HashsumStorage {
 
     public String getChecksum(Portal portal) throws IOException {
         File file = getFilePath(portal).toFile();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line = reader.readLine();
+        String line;
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            line = reader.readLine();
+        }
         if (line == null) {
             throw new IOException("Bad hashsum file");
         }
         return line;
+    }
+
+    public List<String> getChecksums(Portal portal) throws IOException {
+        File file = getFilePath(portal).toFile();
+        ArrayList<String> result = new ArrayList<>();
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            while (line != null) {
+                result.add(line.trim());
+                line = reader.readLine();
+            }
+        }
+        if (result.isEmpty()) {
+            throw new IOException("Bad hashsum file");
+        }
+        return result;
     }
 
     public void save(Portal portal, File screenshot) throws IOException {

@@ -177,11 +177,19 @@ public class PortalTester implements Callable<Boolean> {
 
     private boolean isCorrect(Portal portal, File screenshot) {
         try {
-            String srcHash = hashStorage.getChecksum(portal);
+            List<String> srcHashes = hashStorage.getChecksums(portal);
             String dstHash = hasher.getHashsum(screenshot);
-            boolean hashsumMatches = srcHash.equals(dstHash);
-            if (!hashsumMatches) {
-                _log.warn(String.format("Hashsum mismatch (expected %s, got %s) ", srcHash, dstHash));
+            boolean hashsumMatches = false;
+            for (String srcHash: srcHashes) {
+                hashsumMatches = srcHash.equals(dstHash);
+                if (!hashsumMatches) {
+                    _log.warn(String.format(
+                        "Hashsum mismatch for portal %s (expected %s, got %s) ",
+                        portal.toString(), srcHash, dstHash
+                    ));
+                } else {
+                    break;
+                }
             }
 
             return hashsumMatches;
