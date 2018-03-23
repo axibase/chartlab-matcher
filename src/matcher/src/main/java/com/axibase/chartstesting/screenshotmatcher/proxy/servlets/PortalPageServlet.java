@@ -69,7 +69,7 @@ public class PortalPageServlet extends HttpServlet {
             "  }\n" +
             "  svg {\n" +
             "    font-family: monospace !important;\n" +
-            "    shape-rendering: geometricprecizion !important;\n" +
+            "    shape-rendering: crispedges !important;\n" +
             "  }\n" +
             "  .widget {\n" +
             "    border-radius: 0;\n" +
