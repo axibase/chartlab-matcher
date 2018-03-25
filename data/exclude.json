@@ -1,6 +1,7 @@
 [
   { "path": "aecf6da9/1", "note": "Waiting for fix"},
   { "path": "e6822a69/5", "note": "Graph widget, it's ok"},
+  { "path": "007721aa/2", "note": "OK" },
   { "path": "01c588eb/1", "note": "No forecast, cause of old date"},
   { "path": "06a58e55/1", "note": "No data for BOM"},
   { "path": "106bddba/1", "note": "Use of Freemarker"},
