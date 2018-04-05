@@ -12,6 +12,7 @@
   { "path": "14cf1974/2", "note": "WebDriver fail" },
   { "path": "966f33e4/1", "note": "WebDriver fail" },
   { "path": "f9d176ac/2", "note": "WebDriver fail" },
+  { "path": "01288425/20/", "note": "WebDriver fail" },
   { "path": "b3892525", "note": "PhantomJS fails" },
   { "path": "d80980a8/2/", "note": "PhantomJS fails" },
   { "path": "05400e65/5", "note": "Random data source" },
